@@ -1,0 +1,63 @@
+/* NozzleCast — shared foundation.
+   Tokens, reset, and base type live here. Page layout stays in index.html's own <style> block.
+   Colors are the subset of Bambuddy's own dark control-panel palette this marketing page
+   actually uses, not the full design-system token set. */
+
+:root {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #808080;
+  --text-tertiary: #4a4a4a;
+
+  --border-color: #3d3d3d;
+
+  --accent: #2a5fcc;
+  --accent-light: #4f7fe0;
+
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, .4);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --focus-ring: var(--accent-light);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: clip; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-weight: 700; overflow-wrap: anywhere; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { color: #6f9aec; }
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@keyframes ncFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
