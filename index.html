@@ -44,6 +44,15 @@
   }
 
   /* ---- Screens showcase ---- */
+  /* ---- Promo video ---- */
+  .promo { padding: 60px 24px 0; }
+  .promo .section-head { margin-bottom: 32px; }
+  .promo-frame {
+    max-width: 880px; margin: 0 auto; border-radius: 22px; overflow: hidden;
+    background: #000; border: 1px solid var(--border-color); box-shadow: 0 28px 60px rgba(0,0,0,.6);
+  }
+  .promo-frame video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+
   .showcase { padding: 60px 24px 20px; display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
   .showcase-item { flex: 1 1 260px; max-width: 300px; text-align: center; }
   .showcase-item img { width: 100%; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--card-shadow); }
@@ -126,6 +135,19 @@
   <div class="hero-shots">
     <img class="shot-back" src="assets/filament-inventory.webp" alt="Filament inventory screen">
     <img class="shot-front" src="assets/fleet-monitor.webp" alt="Fleet monitor screen">
+  </div>
+</section>
+
+<section class="promo wrap" aria-labelledby="promo-heading">
+  <div class="section-head">
+    <h2 id="promo-heading">See it in 30 seconds</h2>
+    <p>A quick look at NozzleCast in action.</p>
+  </div>
+  <div class="promo-frame">
+    <video controls playsinline preload="none" poster="assets/promo-poster.webp" width="1920" height="1080" aria-label="NozzleCast promo video: live fleet status, full printer control, AMS and filament management, push alerts and Live Activities">
+      <source src="assets/promo.mp4" type="video/mp4">
+      <a href="assets/promo.mp4">Watch the NozzleCast promo video</a>
+    </video>
   </div>
 </section>
 
