@@ -201,7 +201,7 @@
     <div class="feature-card">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5Z"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
       <h3>Live Activities &amp; alerts</h3>
-      <p>Real progress and ETA on your Lock Screen, plus color-coded HMS warnings the moment something needs attention. Needs the optional Firebase config and relay below.</p>
+      <p>Real progress and ETA on your Lock Screen, plus color-coded HMS warnings when something needs attention. Alerts work out of the box; instant push and Live Activities that start with your phone locked need a self-built app &mdash; see below.</p>
     </div>
   </div>
 </section>
@@ -236,8 +236,8 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5Z"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
     </span>
     <div class="body">
-      <p class="title">Optional: push notifications &amp; Live Activities need two more pieces</p>
-      <p class="detail">Monitoring and filament scanning work with just your Bambuddy server. Push notifications additionally need your own <strong>Firebase</strong> project — import its <code>GoogleService-Info.plist</code> in Settings to receive Bambuddy's ntfy alerts in-app. Lock Screen Live Activities need one more piece on top: <a href="https://github.com/hibikipr/nozzlecast-relay" target="_blank" rel="noopener" style="font-weight:600; text-decoration:underline; color:var(--text-primary);">nozzlecast-relay</a>, a small open-source service you self-host next to Bambuddy to forward print events to Apple's push service. No NozzleCast-operated server is involved in either.</p>
+      <p class="title">Optional: instant push &amp; locked-phone Live Activities</p>
+      <p class="detail">Everything works with just your Bambuddy server. Alerts are read from Bambuddy's notification log, so they can arrive a little late, and Live Activities start and update while the app is open. For instant push, and Live Activities that start the moment a print begins &mdash; even with your phone locked &mdash; you build NozzleCast yourself with your own Apple Developer account, then add your own <strong>Firebase</strong> project and <a href="https://github.com/hibikipr/nozzlecast-relay" target="_blank" rel="noopener" style="font-weight:600; text-decoration:underline; color:var(--text-primary);">nozzlecast-relay</a>, a small open-source service you self-host next to Bambuddy. Apple only lets the developer account that signs an app send it pushes, which is why this can't work with the App Store build. No NozzleCast-operated server is involved either way.</p>
       <p class="links">
         <a class="gh-link" href="https://github.com/hibikipr/nozzlecast-relay" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>
