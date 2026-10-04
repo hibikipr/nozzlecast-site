@@ -341,7 +341,7 @@
       </div>
       <div class="card">
         <h3>Push relay (optional)</h3>
-        <p>If you run <a href="https://github.com/hibikipr/nozzlecast-relay" target="_blank" rel="noopener"><code>nozzlecast-relay</code></a> for Live Activities, its <code>URL</code> and auth secret are stored the same way — on-device, sent only to your relay.</p>
+        <p>If you run <a href="https://github.com/hibikipr/nozzlecast-relay" target="_blank" rel="noopener"><code>nozzlecast-relay</code></a> for Live Activities, its <code>URL</code> and auth secret are stored on your device in the app's private storage (not the Keychain), and sent only to your relay.</p>
       </div>
       <div class="card">
         <h3>Firebase config (optional)</h3>
@@ -392,7 +392,7 @@
 
     <section id="retention">
       <h2><span class="num">07</span>Retention &amp; deletion</h2>
-      <p>Your server URL, API key, and relay credentials live in the iOS Keychain for as long as NozzleCast is installed. Deleting the app removes them. Printer and filament data is never persisted outside your own Bambuddy server — there is nothing else to delete on our end, because nothing else exists.</p>
+      <p>Your server URL and API key live in the iOS Keychain, and relay credentials in the app's private storage, for as long as NozzleCast is installed. Deleting the app removes the relay credentials. iOS can keep Keychain items after an app is deleted, so to remove your server URL and API key, tap <strong>Disconnect</strong> in Settings &rarr; Server before deleting the app. Printer and filament data is never persisted outside your own Bambuddy server — there is nothing else to delete on our end, because nothing else exists.</p>
     </section>
 
     <section id="children">
