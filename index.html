@@ -32,16 +32,173 @@
   .cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .cta-row .note { font-size: 13px; color: var(--text-muted); }
 
-  .hero-shots { flex: 1 1 380px; min-width: 280px; position: relative; display: flex; justify-content: center; }
-  .hero-shots img { border-radius: 22px; border: 1px solid rgba(255,255,255,.1); animation: ncFloat 7s ease-in-out infinite; }
-  .hero-shots .shot-back {
-    width: 44%; position: absolute; left: 2%; top: 14%;
-    box-shadow: 0 20px 50px rgba(0,0,0,.55);
+  .try-line { margin-top: 18px; font-size: 14px; color: var(--text-secondary); }
+  .try-line a { font-weight: 600; }
+
+  /* ---- Live demo phone (hero) ----
+     A working miniature of the app built from the design handoff's tokens, so visitors
+     without a Bambuddy server can still try it. Mock data only; nothing leaves the page. */
+  .hero-demo { flex: 1 1 380px; min-width: 280px; position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; scroll-margin-top: 24px; }
+  .hero-demo::before {
+    content: ""; position: absolute; inset: 8% 10% 14%; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(42,95,204,.38), transparent); filter: blur(30px); z-index: 0;
   }
-  .hero-shots .shot-front {
-    width: 56%; position: relative; z-index: 2; border-color: rgba(255,255,255,.12);
-    box-shadow: 0 28px 60px rgba(0,0,0,.6); animation-duration: 8s;
+  .demo-hint { position: relative; max-width: 300px; font-size: 13px; line-height: 1.5; color: var(--text-secondary); text-align: center; }
+  .demo-hint b { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #22c55e; white-space: nowrap; margin-right: 6px; }
+  .demo-hint i { display: inline-block; vertical-align: 1px; margin-right: 7px; width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 0 rgba(34,197,94,.6); animation: phPing 1.8s ease-out infinite; }
+
+  .demo-phone {
+    --ph-card: rgba(58,58,60,.5); --ph-line: rgba(255,255,255,.08); --ph-2: rgba(235,235,245,.6); --ph-3: rgba(235,235,245,.42);
+    --ok: #22c55e; --warn: #f59e0b; --idle: #6b6b6b;
+    position: relative; z-index: 1; width: 300px; height: 640px; padding: 9px; border-radius: 50px;
+    background: #0a0a0b; border: 1px solid #3a3a3c;
+    box-shadow: 0 40px 80px rgba(0,0,0,.6), inset 0 0 0 2px #1c1c1e;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-sans); color: #fff;
+    -webkit-user-select: none; user-select: none;
   }
+  .ph-glass { position: relative; height: 100%; border-radius: 41px; overflow: hidden; background: #1a1a1a; }
+  .ph-island { position: absolute; top: 10px; left: 50%; width: 82px; height: 24px; margin-left: -41px; border-radius: 20px; background: #000; z-index: 6; }
+  .ph-statusbar { position: absolute; inset: 0 0 auto; height: 44px; padding: 14px 26px 0; display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 600; z-index: 5; }
+  .ph-statusbar svg { vertical-align: -1px; }
+  :where(.demo-phone) button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: left; }
+
+  .ph-screen {
+    position: absolute; inset: 44px 0 0; padding: 6px 14px 88px; overflow-y: auto; scrollbar-width: none;
+    opacity: 0; transform: translateX(14px); visibility: hidden;
+    transition: opacity .22s ease, transform .22s ease, visibility 0s .22s;
+  }
+  .ph-screen::-webkit-scrollbar { display: none; }
+  .ph-screen.is-on { opacity: 1; transform: none; visibility: visible; transition-delay: 0s; }
+  .ph-head { display: flex; justify-content: space-between; align-items: flex-start; margin: 10px 2px 14px; }
+  .ph-head h4 { font-size: 27px; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+  .ph-sub { font-size: 12.5px; color: var(--ph-2); margin-top: 3px; }
+  .ph-round { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(58,58,60,.7); flex: none; }
+
+  .ph-card {
+    position: relative; width: 100%; display: flex; align-items: center; gap: 11px; padding: 11px;
+    margin-bottom: 9px; border-radius: 18px; background: var(--ph-card); border: 1px solid var(--ph-line);
+    box-shadow: 0 8px 20px rgba(0,0,0,.35); transition: transform .15s ease, background .15s ease;
+  }
+  .ph-card:hover { background: rgba(72,72,74,.55); }
+  .ph-card:active { transform: scale(.98); }
+  .ph-card.is-nudge::after {
+    content: ""; position: absolute; inset: -1px; border-radius: 18px; border: 2px solid var(--accent-light);
+    animation: phNudge 2.2s ease-out infinite; pointer-events: none;
+  }
+  .ph-thumb { width: 44px; height: 44px; flex: none; border-radius: 11px; display: grid; place-items: center; background: #141414; border: 1px solid var(--ph-line); color: #8e8e93; }
+  .ph-cbody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .ph-ctop { display: flex; justify-content: space-between; gap: 6px; }
+  .ph-name { font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .ph-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--ph-2); white-space: nowrap; }
+  .ph-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--idle)); }
+  .ph-file { font-size: 11.5px; color: var(--ph-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ph-bar { height: 4px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; }
+  .ph-bar span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent); transition: width .6s ease, background .3s; }
+  .ph-meta { font-size: 11px; color: var(--ph-3); font-variant-numeric: tabular-nums; }
+  .ph-dots { display: flex; gap: 5px; }
+  .ph-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--d, #3a3a3c); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  .ph-card.is-idle .ph-file, .ph-card.is-idle .ph-bar, .ph-card.is-idle .ph-meta { display: none; }
+  .ph-chev { color: #636366; flex: none; }
+
+  /* Printer detail */
+  .ph-cam { position: relative; height: 128px; margin: -6px -14px 14px; display: grid; place-items: center; color: #8e8e93;
+    background: linear-gradient(#262626, #1c1c1c); transition: background .5s ease, color .5s ease; }
+  .ph-cam.is-lit { background: radial-gradient(120% 90% at 50% 0%, #6b5a3a, #2a261f 60%, #1c1c1c); color: #e8dcc4; }
+  .ph-cam .ph-round { position: absolute; top: 8px; }
+  .ph-cam .ph-back { left: 12px; }
+  .ph-cam .ph-more { right: 12px; }
+  .ph-cam-tag { position: absolute; left: 12px; bottom: 9px; font-size: 9.5px; font-weight: 700; letter-spacing: .08em; color: rgba(255,255,255,.55); }
+  .ph-dname { font-size: 21px; font-weight: 700; }
+  .ph-job { margin: 12px 0; padding: 12px; border-radius: 18px; background: var(--ph-card); border: 1px solid var(--ph-line); }
+  .ph-job-top { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .ph-job-top span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ph-job .ph-meta { margin-top: 7px; }
+  .ph-ctrls { display: flex; gap: 14px; margin-bottom: 14px; }
+  .ph-ctrl { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10.5px; color: var(--ph-2); }
+  .ph-ctrl span:first-child { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: rgba(72,72,74,.7); border: 1px solid var(--ph-line); transition: background .2s, border-color .2s; }
+  .ph-ctrl[aria-pressed="true"] span:first-child { background: rgba(42,95,204,.35); border-color: var(--accent-light); }
+  .ph-ctrl.is-armed span:first-child { background: rgba(239,68,68,.3); border-color: #ef4444; }
+  .ph-ctrl:disabled { opacity: .35; cursor: default; }
+  .ph-eyebrow { font-size: 10.5px; letter-spacing: .06em; color: var(--ph-2); text-transform: uppercase; margin: 4px 0 7px; }
+  .ph-temps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 12px; }
+  .ph-temp { padding: 9px; border-radius: 13px; background: rgba(44,44,46,.8); font-variant-numeric: tabular-nums; }
+  .ph-temp b { display: block; font-size: 14px; margin: 4px 0 1px; }
+  .ph-temp small { font-size: 10.5px; color: var(--ph-2); }
+  .ph-ams { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .ph-slot { padding: 3px 3px 5px; border-radius: 12px; border: 1.5px solid var(--accent); text-align: center; font-size: 8.5px; color: var(--ph-2); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .ph-slot span { display: grid; place-items: center; height: 34px; margin-bottom: 4px; border-radius: 9px; background: var(--s); color: var(--t, #fff); font-size: 9px; font-weight: 700; }
+  .ph-slot.is-empty { border-color: var(--ph-line); }
+  .ph-slot.is-empty span { background: repeating-linear-gradient(135deg, #2a2a2a 0 5px, #222 5px 10px); color: #8e8e93; font-weight: 500; }
+
+  /* Inventory */
+  .ph-chips { display: flex; gap: 6px; margin: -4px 0 12px; }
+  .ph-chip { padding: 6px 11px; border-radius: 99px; font-size: 12px; background: rgba(58,58,60,.7); white-space: nowrap; }
+  .ph-chip[aria-pressed="true"] { background: var(--accent); }
+  .ph-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .ph-spool { min-width: 0; padding: 7px 7px 9px; border-radius: 16px; background: var(--ph-card); border: 1px solid var(--ph-line); }
+  .ph-spool.is-new { animation: phArrive 1.6s ease-out; }
+  .ph-sw { height: 46px; border-radius: 10px; background: var(--s); color: var(--t, #fff); font-size: 9.5px; font-weight: 700; display: flex; align-items: flex-end; padding: 5px 7px; margin-bottom: 7px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+  .ph-spool b { display: block; font-size: 12px; font-weight: 600; }
+  .ph-spool small { display: block; font-size: 10.5px; color: var(--ph-3); margin-bottom: 6px; }
+  .ph-spool .ph-bar { height: 3px; }
+  .ph-spool .ph-bar span { background: var(--s); }
+  .ph-spool .ph-meta { margin-top: 4px; font-size: 9.5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+  /* Scan */
+  .ph-finder { position: relative; height: 270px; border-radius: 20px; overflow: hidden; display: grid; place-items: center;
+    background: radial-gradient(90% 70% at 50% 40%, #3a3631, #141414); }
+  .ph-box { width: 170px; padding: 12px; border-radius: 8px; background: #f3efe6; color: #1a1a1a; transform: rotate(-4deg); box-shadow: 0 14px 30px rgba(0,0,0,.5); transition: opacity .3s, transform .3s; }
+  .ph-box.is-swap { opacity: 0; transform: rotate(-4deg) translateY(10px); }
+  .ph-box small { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #6b6b6b; }
+  .ph-box b { display: block; font-size: 15px; margin: 2px 0 6px; }
+  .ph-box em { display: flex; align-items: center; gap: 6px; font-style: normal; font-size: 11px; margin-bottom: 8px; }
+  .ph-box em i { width: 14px; height: 14px; border-radius: 4px; background: var(--s); box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+  .ph-barcode { height: 30px; background: repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 4px, #111 4px 5px, transparent 5px 8px, #111 8px 11px, transparent 11px 12px); }
+  .ph-corners { position: absolute; inset: 34px 30px; border-radius: 14px;
+    background:
+      linear-gradient(#fff,#fff) 0 0/22px 3px, linear-gradient(#fff,#fff) 0 0/3px 22px,
+      linear-gradient(#fff,#fff) 100% 0/22px 3px, linear-gradient(#fff,#fff) 100% 0/3px 22px,
+      linear-gradient(#fff,#fff) 0 100%/22px 3px, linear-gradient(#fff,#fff) 0 100%/3px 22px,
+      linear-gradient(#fff,#fff) 100% 100%/22px 3px, linear-gradient(#fff,#fff) 100% 100%/3px 22px;
+    background-repeat: no-repeat; }
+  .ph-laser { position: absolute; left: 30px; right: 30px; top: 34px; height: 2px; background: var(--accent-light); box-shadow: 0 0 12px 2px rgba(79,127,224,.8); animation: phScan 2.4s ease-in-out infinite alternate; }
+  .ph-finder.is-reading .ph-laser { animation-duration: .5s; }
+  .ph-scan-note { font-size: 12px; color: var(--ph-2); text-align: center; margin: 12px 0; }
+  .ph-shutter { display: block; margin: 0 auto; width: 62px; height: 62px; border-radius: 50%; border: 4px solid #fff; box-shadow: inset 0 0 0 3px #1a1a1a; background: #fff; transition: transform .12s; }
+  .ph-shutter:active { transform: scale(.92); }
+  .ph-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 16px 16px 92px; border-radius: 24px 24px 0 0;
+    background: rgba(44,44,46,.97); box-shadow: 0 -10px 40px rgba(0,0,0,.5); transform: translateY(105%); visibility: hidden;
+    transition: transform .32s cubic-bezier(.2,.8,.2,1), visibility 0s .32s; }
+  .ph-sheet.is-on { transform: none; visibility: visible; transition-delay: 0s; }
+  .ph-found { display: flex; gap: 12px; align-items: center; margin: 8px 0 14px; }
+  .ph-found i { width: 46px; height: 46px; border-radius: 12px; background: var(--s); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+  .ph-found b { display: block; font-size: 15px; }
+  .ph-found small { font-size: 12px; color: var(--ph-2); }
+  .ph-primary { display: block; width: 100%; padding: 12px; border-radius: 99px; background: var(--accent); text-align: center; font-weight: 600; font-size: 14px; }
+
+  /* Settings */
+  .ph-group { border-radius: 12px; background: #2c2c2e; margin-bottom: 14px; overflow: hidden; }
+  .ph-row { display: flex; justify-content: space-between; gap: 10px; padding: 11px 13px; font-size: 13px; border-top: .5px solid rgba(84,84,88,.55); }
+  .ph-row:first-child { border-top: 0; }
+  .ph-row span:last-child { color: var(--ph-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Toast + tab bar */
+  .ph-toast { position: absolute; top: 46px; left: 9px; right: 9px; z-index: 7; display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 20px;
+    background: rgba(58,58,60,.96); box-shadow: 0 12px 30px rgba(0,0,0,.5); transform: translateY(-160%); visibility: hidden;
+    transition: transform .38s cubic-bezier(.2,.9,.25,1.15), visibility 0s .38s; }
+  .ph-toast.is-on { transform: none; visibility: visible; transition-delay: 0s; }
+  .ph-toast > i { width: 30px; height: 30px; flex: none; border-radius: 9px; display: grid; place-items: center; background: var(--c, var(--ok)); }
+  .ph-toast b { display: block; font-size: 12.5px; }
+  .ph-toast small { display: block; font-size: 11.5px; color: var(--ph-2); line-height: 1.3; }
+  .ph-tabs { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 5; display: flex; padding: 5px; border-radius: 30px;
+    background: rgba(44,44,46,.88); border: 1px solid var(--ph-line); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
+  .ph-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 0 5px; border-radius: 24px; font-size: 9.5px; font-weight: 600; color: #d1d1d6; }
+  .ph-tab[aria-current="page"] { background: rgba(0,0,0,.35); color: var(--accent-light); }
+
+  @keyframes phPing { to { box-shadow: 0 0 0 9px rgba(34,197,94,0); } }
+  @keyframes phNudge { 0% { opacity: .9; transform: scale(1); } 80%, 100% { opacity: 0; transform: scale(1.06); } }
+  @keyframes phScan { to { top: calc(100% - 36px); } }
+  @keyframes phArrive { 0% { box-shadow: 0 0 0 0 rgba(79,127,224,.9); transform: scale(.9); } 40% { transform: scale(1.03); } 100% { box-shadow: 0 0 0 14px rgba(79,127,224,0); transform: none; } }
 
   /* ---- Screens showcase ---- */
   /* ---- Promo video ---- */
@@ -130,6 +287,7 @@
       </a>
       <span class="note">Requires a Bambuddy server &amp; API key</span>
     </div>
+    <p class="try-line">No Bambuddy server handy? <a href="#demo">Try the live demo</a> — it runs right here, no setup.</p>
     <p class="links">
       <a class="gh-link" href="https://github.com/hibikipr/NozzleCast" target="_blank" rel="noopener">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>
@@ -140,9 +298,103 @@
     </p>
   </div>
 
-  <div class="hero-shots">
-    <img class="shot-back" src="assets/filament-inventory.webp" alt="Filament inventory screen">
-    <img class="shot-front" src="assets/fleet-monitor.webp" alt="Fleet monitor screen">
+  <div class="hero-demo" id="demo">
+    <div class="demo-phone" role="region" aria-label="Interactive NozzleCast demo with sample printers">
+      <div class="ph-glass">
+        <div class="ph-island"></div>
+        <div class="ph-statusbar" aria-hidden="true">
+          <span>9:41</span>
+          <span><svg width="15" height="11" viewBox="0 0 15 11" fill="#fff"><path d="M7.5 2.2c2 0 3.9.8 5.3 2.1l1.1-1.1A9 9 0 0 0 7.5.6 9 9 0 0 0 1.1 3.2l1.1 1.1A7.6 7.6 0 0 1 7.5 2.2Zm0 3.2c1.2 0 2.3.5 3.1 1.2l1.1-1.1a6 6 0 0 0-8.4 0l1.1 1.1c.8-.7 1.9-1.2 3.1-1.2Zm0 3.2c.4 0 .8.2 1 .4L7.5 10 6.5 9c.2-.2.6-.4 1-.4Z"/></svg>
+            <svg width="24" height="11" viewBox="0 0 24 11"><rect x=".5" y=".5" width="20" height="10" rx="3" fill="none" stroke="#fff" stroke-opacity=".4"/><rect x="2" y="2" width="17" height="7" rx="1.8" fill="#34c759"/><rect x="21.5" y="3.5" width="1.5" height="4" rx=".7" fill="#fff" fill-opacity=".4"/></svg></span>
+        </div>
+
+        <button class="ph-toast" type="button" aria-live="polite"><i></i><span><b></b><small></small></span></button>
+
+        <div class="ph-screen is-on" data-screen="monitor">
+          <div class="ph-head">
+            <div><h4>NozzleCast</h4><p class="ph-sub" data-k="fleet-sub"></p></div>
+            <span class="ph-round" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 8a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5Z"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+          </div>
+          <div data-k="fleet"></div>
+        </div>
+
+        <div class="ph-screen" data-screen="detail">
+          <div class="ph-cam" data-k="cam">
+            <button class="ph-round ph-back" type="button" data-go="monitor" aria-label="Back to fleet"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <span class="ph-round ph-more" aria-hidden="true"><svg width="14" height="4" viewBox="0 0 14 4" fill="#fff"><circle cx="2" cy="2" r="1.6"/><circle cx="7" cy="2" r="1.6"/><circle cx="12" cy="2" r="1.6"/></svg></span>
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 6.6 3.3L12 10.8 5.4 7.5 12 4.2ZM5 9.1l6 3v7.6l-6-3V9.1Zm8 10.6v-7.6l6-3v7.6l-6 3Z"/></svg>
+            <span class="ph-cam-tag">● LIVE VIEW</span>
+          </div>
+          <p class="ph-dname" data-k="d-name"></p>
+          <p class="ph-sub" data-k="d-sub"></p>
+          <div class="ph-job">
+            <div class="ph-job-top"><span data-k="d-file"></span><span data-k="d-pct"></span></div>
+            <div class="ph-bar"><span data-k="d-bar"></span></div>
+            <p class="ph-meta" data-k="d-left"></p>
+          </div>
+          <div class="ph-ctrls">
+            <button class="ph-ctrl" type="button" data-act="pause"><span data-k="d-pause-icon"></span><span data-k="d-pause-label"></span></button>
+            <button class="ph-ctrl" type="button" data-act="stop"><span><svg width="14" height="14" viewBox="0 0 14 14" fill="#fff"><rect width="14" height="14" rx="2.5"/></svg></span><span data-k="d-stop-label">Stop</span></button>
+            <button class="ph-ctrl" type="button" data-act="light" aria-pressed="false"><span><svg width="16" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2Zm-3 18h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1Z"/></svg></span><span>Light</span></button>
+          </div>
+          <p class="ph-eyebrow">Temperatures</p>
+          <div class="ph-temps">
+            <div class="ph-temp"><svg width="13" height="13" viewBox="0 0 24 24" fill="#4f7fe0"><path d="M12 2s6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 2-5s1 3 3 3c0-4 1-7 1-10Z"/></svg><b data-k="t-noz"></b><small>Nozzle</small></div>
+            <div class="ph-temp"><svg width="13" height="13" viewBox="0 0 24 24" fill="#4f7fe0"><path d="m12 2 10 5-10 5L2 7l10-5Zm-8.4 8.7L12 15l8.4-4.3L22 12l-10 5-10-5 1.6-1.3Zm0 5L12 20l8.4-4.3L22 17l-10 5-10-5 1.6-1.3Z"/></svg><b data-k="t-bed"></b><small>Bed</small></div>
+            <div class="ph-temp"><svg width="13" height="13" viewBox="0 0 24 24" fill="#4f7fe0"><path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Z"/></svg><b data-k="t-ch"></b><small>Chamber</small></div>
+          </div>
+          <p class="ph-eyebrow">AMS Filament</p>
+          <div class="ph-ams" data-k="ams"></div>
+        </div>
+
+        <div class="ph-screen" data-screen="inventory">
+          <div class="ph-head"><div><h4>Filament</h4><p class="ph-sub" data-k="inv-sub"></p></div></div>
+          <div class="ph-chips" data-k="chips"></div>
+          <div class="ph-grid" data-k="grid"></div>
+        </div>
+
+        <div class="ph-screen" data-screen="scan">
+          <div class="ph-head"><div><h4>Scan</h4><p class="ph-sub">Point at a spool box or label</p></div></div>
+          <div class="ph-finder" data-k="finder">
+            <div class="ph-box" data-k="box"><small></small><b></b><em><i></i><span></span></em><div class="ph-barcode"></div></div>
+            <div class="ph-corners"></div>
+            <div class="ph-laser"></div>
+          </div>
+          <p class="ph-scan-note" data-k="scan-note">Tap the shutter to read the label</p>
+          <button class="ph-shutter" type="button" data-act="scan" aria-label="Scan the spool box"></button>
+        </div>
+
+        <div class="ph-screen" data-screen="settings">
+          <div class="ph-head"><div><h4>Settings</h4></div></div>
+          <p class="ph-eyebrow">Bambuddy server</p>
+          <div class="ph-group">
+            <div class="ph-row"><span>Server</span><span>bambuddy.local:8000</span></div>
+            <div class="ph-row"><span>Status</span><span style="color:#22c55e">● Connected</span></div>
+            <div class="ph-row"><span>API key</span><span>•••••••• · Keychain</span></div>
+          </div>
+          <p class="ph-eyebrow">Privacy</p>
+          <div class="ph-group">
+            <div class="ph-row"><span>Account</span><span>None needed</span></div>
+            <div class="ph-row"><span>Analytics</span><span>None</span></div>
+            <div class="ph-row"><span>Cloud</span><span>Your server only</span></div>
+          </div>
+        </div>
+
+        <div class="ph-sheet" data-k="sheet" role="dialog" aria-label="Scan result">
+          <p class="ph-eyebrow">Found it</p>
+          <div class="ph-found"><i data-k="f-sw"></i><span><b data-k="f-name"></b><small data-k="f-meta"></small></span></div>
+          <button class="ph-primary" type="button" data-act="add">Add to Inventory</button>
+        </div>
+
+        <nav class="ph-tabs" aria-label="Demo tabs">
+          <button class="ph-tab" type="button" data-go="monitor" aria-current="page"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>Monitor</button>
+          <button class="ph-tab" type="button" data-go="inventory"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="4"/><circle cx="6" cy="14" r="4"/><circle cx="18" cy="14" r="4"/><circle cx="12" cy="20" r="3"/></svg>Inventory</button>
+          <button class="ph-tab" type="button" data-go="scan"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><circle cx="12" cy="12" r="3.5"/></svg>Scan</button>
+          <button class="ph-tab" type="button" data-go="settings"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.7c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.5-2.2-1.8ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" transform="translate(-1 0)"/></svg>Settings</button>
+        </nav>
+      </div>
+    </div>
+    <p class="demo-hint"><i></i><b>LIVE DEMO</b> Tap a printer, flip the light, scan a spool.</p>
   </div>
 </section>
 
@@ -265,5 +517,287 @@
   </div>
   <p class="disclaimer">NozzleCast is an independent companion app for <a href="https://bambuddy.cool" target="_blank" rel="noopener">Bambuddy</a>. Not affiliated with or endorsed by Bambu Lab. · <a href="privacy.html">Privacy Policy</a> · <a href="https://github.com/hibikipr/NozzleCast" target="_blank" rel="noopener">Source on GitHub</a></p>
 </footer>
+<script>
+/* Live demo phone: sample data only, runs entirely in the page. One demo second = two print minutes. */
+(() => {
+  const phone = document.querySelector('.demo-phone');
+  if (!phone) return;
+  const $ = (k) => phone.querySelector(`[data-k="${k}"]`);
+  const STATUS = {
+    printing: ['Printing', 'var(--ok)'], paused: ['Paused', 'var(--warn)'],
+    idle: ['Idle', 'var(--idle)'], finished: ['Finished', 'var(--ok)'],
+  };
+  const CUBE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 6.6 3.3L12 10.8 5.4 7.5 12 4.2ZM5 9.1l6 3v7.6l-6-3V9.1Zm8 10.6v-7.6l6-3v7.6l-6 3Z"/></svg>';
+  const PAUSE = '<svg width="14" height="16" viewBox="0 0 14 16" fill="#fff"><rect width="4.5" height="16" rx="1.5"/><rect x="9.5" width="4.5" height="16" rx="1.5"/></svg>';
+  const PLAY = '<svg width="14" height="16" viewBox="0 0 14 16" fill="#fff"><path d="M1 1.3v13.4a1 1 0 0 0 1.5.9l11-6.7a1 1 0 0 0 0-1.8l-11-6.7A1 1 0 0 0 1 1.3Z"/></svg>';
+  const NEXT_JOBS = ['Benchy_Speedboat.3mf', 'Cable_Clips_x24.3mf', 'Gridfinity_Bin_2x3.3mf'];
+
+  const printers = [
+    { name: 'Workshop X1C', model: 'X1 Carbon', file: 'Articulated_Dragon_v2.3.mf', total: 200, left: 72, status: 'printing', light: false,
+      noz: [245, 245], bed: [60, 60], ch: 42, ams: [['PLA', 'Sunset Orange', '#e8622c'], ['PLA', 'Onyx Black', '#161616'], ['PETG', 'Cobalt Blue', '#2a5fcc'], null] },
+    { name: 'Garage A1', model: 'A1', file: '', total: 0, left: 0, status: 'idle', light: false,
+      noz: [27, 0], bed: [24, 0], ch: null, ams: [['PLA', 'Amber Gold', '#d9a326'], null, null, null] },
+    { name: 'Office P1S', model: 'P1S', file: 'Vase_Mode_Twist.mf', total: 210, left: 145, status: 'paused', light: false,
+      noz: [218, 220], bed: [55, 55], ch: 31, ams: [null, null, ['ABS', 'Pure White', '#eeeeee'], null] },
+  ];
+  const spools = [
+    ['PLA', 'Sunset Orange', 'Bambu Lab', '#e8622c', 72, 'Workshop X1C · AMS 1 · Slot 1'],
+    ['PLA', 'Onyx Black', 'Bambu Lab', '#161616', 45, 'Workshop X1C · AMS 1 · Slot 2'],
+    ['PETG', 'Cobalt Blue', 'Polymaker', '#2a5fcc', 88, 'Workshop X1C · AMS 1 · Slot 3'],
+    ['PLA', 'Amber Gold', 'eSun', '#d9a326', 30, 'Garage A1 · AMS 1 · Slot 1'],
+    ['ABS', 'Pure White', 'Bambu Lab', '#eeeeee', 60, 'Office P1S · AMS 1 · Slot 3'],
+    ['PLA', 'Forest Green', 'Bambu Lab', '#2e6e3e', 100, 'In storage'],
+    ['TPU', 'Magenta Pink', 'Overture', '#c42a83', 55, 'In storage'],
+    ['PETG', 'Charcoal Grey', 'Polymaker', '#4a4a4a', 80, 'In storage'],
+  ];
+  const labels = [
+    { brand: 'Polymaker', line: 'PolyTerra PLA', mat: 'PLA', color: 'Cotton White', hex: '#f1ede4' },
+    { brand: 'Bambu Lab', line: 'PETG HF', mat: 'PETG', color: 'Lime Green', hex: '#8fd14f' },
+    { brand: 'eSun', line: 'PLA+', mat: 'PLA', color: 'Fire Engine Red', hex: '#d32f2f' },
+  ];
+  let screen = 'monitor', open = 0, filter = 'All', labelIdx = 0, found = null, newSpool = -1, toastTimer, stopTimer;
+
+  const pct = (p) => p.total ? Math.round((1 - p.left / p.total) * 100) : 0;
+  const fmt = (m) => (m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`) + ' left';
+  const ink = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 170 ? '#1a1a1a' : '#fff';
+  };
+  const temp = ([now, target]) => target ? `${Math.round(now)}°/${target}°` : `${Math.round(now)}°`;
+
+  // ---- Fleet ----
+  const fleet = $('fleet');
+  printers.forEach((p, i) => {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'ph-card' + (i === 0 ? ' is-nudge' : '');
+    card.innerHTML = `<span class="ph-thumb">${CUBE}</span>
+      <span class="ph-cbody">
+        <span class="ph-ctop"><span class="ph-name">${p.name}</span><span class="ph-pill"><i></i><span></span></span></span>
+        <span class="ph-file"></span><span class="ph-bar"><span></span></span><span class="ph-meta"></span>
+        <span class="ph-dots">${p.ams.map((s) => `<i${s ? ` style="--d:${s[2]}"` : ''}></i>`).join('')}</span>
+      </span>
+      <svg class="ph-chev" width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m1.5 1.5 5 5-5 5"/></svg>`;
+    card.addEventListener('click', () => openPrinter(i));
+    fleet.append(card);
+  });
+
+  function renderFleet() {
+    const printing = printers.filter((p) => p.status === 'printing').length;
+    $('fleet-sub').textContent = `${printing} printing · ${printers.length} printers`;
+    printers.forEach((p, i) => {
+      const card = fleet.children[i];
+      const [label, color] = STATUS[p.status];
+      card.classList.toggle('is-idle', p.status === 'idle');
+      card.querySelector('.ph-pill').style.setProperty('--c', color);
+      card.querySelector('.ph-pill span').textContent = label;
+      card.querySelector('.ph-file').textContent = p.file;
+      card.querySelector('.ph-bar span').style.width = pct(p) + '%';
+      card.querySelector('.ph-meta').textContent = p.status === 'finished' ? 'Done · plate ready to clear' : `${pct(p)}%  ·  ${fmt(p.left)}`;
+      card.setAttribute('aria-label', `${p.name}, ${label}${p.file ? `, ${p.file}, ${pct(p)} percent` : ''}`);
+    });
+  }
+
+  // ---- Printer detail ----
+  function openPrinter(i) {
+    open = i;
+    fleet.children[0].classList.remove('is-nudge');
+    show('detail');
+    renderDetail();
+  }
+
+  function renderDetail() {
+    const p = printers[open];
+    const active = p.status === 'printing' || p.status === 'paused';
+    $('d-name').textContent = p.name;
+    $('d-sub').textContent = `${p.model} · ${STATUS[p.status][0]}`;
+    $('d-file').textContent = p.file || 'No active print';
+    $('d-pct').textContent = p.file ? pct(p) + '%' : '';
+    $('d-bar').style.width = pct(p) + '%';
+    $('d-left').textContent = p.status === 'finished' ? 'Finished · plate ready to clear' : active ? fmt(p.left).replace('left', 'remaining') : 'Ready for the next job';
+    $('d-pause-icon').innerHTML = p.status === 'paused' ? PLAY : PAUSE;
+    $('d-pause-label').textContent = p.status === 'paused' ? 'Resume' : 'Pause';
+    phone.querySelector('[data-act="pause"]').disabled = !active;
+    phone.querySelector('[data-act="stop"]').disabled = !active;
+    const lightBtn = phone.querySelector('[data-act="light"]');
+    lightBtn.setAttribute('aria-pressed', String(p.light));
+    $('cam').classList.toggle('is-lit', p.light);
+    $('t-noz').textContent = temp(p.noz);
+    $('t-bed').textContent = temp(p.bed);
+    $('t-ch').textContent = p.ch == null ? '—' : `${Math.round(p.ch)}°`;
+    $('ams').innerHTML = p.ams.map((s, n) => s
+      ? `<div class="ph-slot"><span style="--s:${s[2]};--t:${ink(s[2])}">${s[0]}</span>${s[1]}</div>`
+      : `<div class="ph-slot is-empty"><span>Empty</span>Slot ${n + 1}</div>`).join('');
+  }
+
+  phone.querySelector('[data-act="pause"]').addEventListener('click', () => {
+    const p = printers[open];
+    p.status = p.status === 'paused' ? 'printing' : 'paused';
+    renderAll();
+  });
+  phone.querySelector('[data-act="light"]').addEventListener('click', () => {
+    printers[open].light = !printers[open].light;
+    renderDetail();
+  });
+  const stopBtn = phone.querySelector('[data-act="stop"]');
+  stopBtn.addEventListener('click', () => {
+    if (!stopBtn.classList.contains('is-armed')) {
+      stopBtn.classList.add('is-armed');
+      $('d-stop-label').textContent = 'Confirm';
+      stopTimer = setTimeout(disarm, 2500);
+      return;
+    }
+    disarm();
+    const p = printers[open];
+    Object.assign(p, { status: 'idle', file: '', total: 0, left: 0, noz: [p.noz[0], 0], bed: [p.bed[0], 0] });
+    toast('Print stopped', `${p.name} is idle`, 'var(--idle)', open);
+    renderAll();
+  });
+  function disarm() {
+    clearTimeout(stopTimer);
+    stopBtn.classList.remove('is-armed');
+    $('d-stop-label').textContent = 'Stop';
+  }
+
+  // ---- Inventory ----
+  const CHIPS = ['All', 'In AMS', 'PLA', 'PETG'];
+  $('chips').innerHTML = CHIPS.map((c) => `<button class="ph-chip" type="button" aria-pressed="${c === filter}">${c}</button>`).join('');
+  $('chips').addEventListener('click', (e) => {
+    const chip = e.target.closest('.ph-chip');
+    if (!chip) return;
+    filter = chip.textContent;
+    $('chips').querySelectorAll('.ph-chip').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    renderInventory();
+  });
+
+  function renderInventory() {
+    const grams = spools.reduce((sum, s) => sum + s[4] * 10, 0);
+    $('inv-sub').textContent = `${spools.length} spools · ${grams.toLocaleString('en-US')} g on hand`;
+    $('grid').innerHTML = spools.map((s, i) => [s, i]).filter(([s]) =>
+      filter === 'All' || (filter === 'In AMS' ? s[5].includes('AMS') : s[0] === filter)
+    ).map(([s, i]) => `<div class="ph-spool${i === newSpool ? ' is-new' : ''}">
+        <div class="ph-sw" style="--s:${s[3]};--t:${ink(s[3])}">${s[0]}</div>
+        <b>${s[1]}</b><small>${s[2]}</small>
+        <div class="ph-bar" style="--s:${s[3]}"><span style="width:${s[4]}%"></span></div>
+        <p class="ph-meta">${s[4]}% · ${s[5]}</p></div>`).join('');
+  }
+
+  // ---- Scan ----
+  function loadLabel() {
+    const l = labels[labelIdx % labels.length];
+    const box = $('box');
+    box.querySelector('small').textContent = l.brand;
+    box.querySelector('b').textContent = l.line;
+    box.querySelector('em i').style.setProperty('--s', l.hex);
+    box.querySelector('em span').textContent = `${l.color} · 1.75 mm · 1 kg`;
+  }
+  phone.querySelector('[data-act="scan"]').addEventListener('click', () => {
+    if (found) return;
+    found = labels[labelIdx % labels.length];
+    $('finder').classList.add('is-reading');
+    $('scan-note').textContent = 'Reading barcode and label…';
+    setTimeout(() => {
+      $('finder').classList.remove('is-reading');
+      $('scan-note').textContent = 'Matched by barcode';
+      $('f-sw').style.setProperty('--s', found.hex);
+      $('f-name').textContent = `${found.color}`;
+      $('f-meta').textContent = `${found.brand} · ${found.line} · 1000 g`;
+      $('sheet').classList.add('is-on');
+    }, 1100);
+  });
+  phone.querySelector('[data-act="add"]').addEventListener('click', () => {
+    spools.unshift([found.mat, found.color, found.brand, found.hex, 100, 'In storage']);
+    newSpool = 0;
+    filter = 'All';
+    $('chips').querySelectorAll('.ph-chip').forEach((c) => c.setAttribute('aria-pressed', String(c.textContent === 'All')));
+    const added = found;
+    resetScan();
+    labelIdx++;
+    show('inventory');
+    $('grid').parentElement.scrollTop = 0;
+    toast('Added to inventory', `${added.brand} ${added.color} is in storage`, 'var(--accent)', null);
+  });
+  function resetScan() {
+    found = null;
+    $('sheet').classList.remove('is-on');
+    $('scan-note').textContent = 'Tap the shutter to read the label';
+    $('box').classList.add('is-swap');
+    setTimeout(() => { loadLabel(); $('box').classList.remove('is-swap'); }, 300);
+  }
+
+  // ---- Navigation, toast, clock ----
+  function show(name) {
+    if (screen === 'scan' && name !== 'scan' && found) resetScan();
+    if (name !== 'detail') disarm();
+    screen = name;
+    phone.querySelectorAll('.ph-screen').forEach((s) => s.classList.toggle('is-on', s.dataset.screen === name));
+    const tab = name === 'detail' ? 'monitor' : name;
+    phone.querySelectorAll('.ph-tab').forEach((t) => (t.dataset.go === tab ? t.setAttribute('aria-current', 'page') : t.removeAttribute('aria-current')));
+    if (name === 'inventory') renderInventory();
+  }
+  phone.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => show(b.dataset.go)));
+
+  const toastEl = phone.querySelector('.ph-toast');
+  let toastTarget = null;
+  function toast(title, body, color, target) {
+    toastEl.querySelector('b').textContent = title;
+    toastEl.querySelector('small').textContent = body;
+    toastEl.querySelector('i').style.setProperty('--c', color);
+    toastEl.querySelector('i').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M6 8a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5Z"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
+    toastTarget = target;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 4800);
+  }
+  toastEl.addEventListener('click', () => {
+    toastEl.classList.remove('is-on');
+    if (toastTarget != null) openPrinter(toastTarget);
+  });
+
+  function renderAll() {
+    renderFleet();
+    if (screen === 'detail') renderDetail();
+  }
+
+  const jitter = (v, to) => v + (to - v) * 0.25 + (Math.random() - 0.5) * 0.8;
+  function tick() {
+    printers.forEach((p, i) => {
+      const hot = p.status === 'printing';
+      p.noz[0] = jitter(p.noz[0], hot ? p.noz[1] : p.status === 'paused' ? p.noz[1] - 2 : 27);
+      p.bed[0] = jitter(p.bed[0], p.bed[1] || 24);
+      if (!hot) return;
+      p.left = Math.max(0, p.left - 2);
+      if (p.left === 0) {
+        p.status = 'finished';
+        p.noz[1] = 0; p.bed[1] = 0;
+        toast(`${p.name} finished`, `${p.file} is done — plate ready to clear`, 'var(--ok)', i);
+        setTimeout(() => {
+          Object.assign(p, { status: 'printing', file: NEXT_JOBS[i % NEXT_JOBS.length], total: 46, left: 46, noz: [p.noz[0], 220], bed: [p.bed[0], 55] });
+          NEXT_JOBS.push(NEXT_JOBS.shift());
+          renderAll();
+        }, 9000);
+      }
+    });
+    renderAll();
+  }
+
+  loadLabel();
+  renderAll();
+  renderInventory();
+  let started = false;
+  const begin = () => {
+    if (started) return;
+    started = true;
+    setInterval(tick, 1000);
+    setTimeout(() => toast('Office P1S paused', 'HMS: filament runout on AMS slot 3', 'var(--warn)', 2), 4000);
+  };
+  // Start the clock once the phone is on screen so the scripted alert isn't missed.
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries, io) => {
+      if (entries.some((e) => e.isIntersecting)) { begin(); io.disconnect(); }
+    }, { threshold: 0.4 }).observe(phone);
+  } else begin();
+})();
+</script>
 </body>
 </html>
